@@ -20,7 +20,7 @@ interface RepoInputProps {
 
 const RepoInput: React.FC<RepoInputProps> = ({ onRepoAnalyzed, onAnalysisStart }) => {
   const [repoUrl, setRepoUrl] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [error, setError] = useState("");
   const [isDownloadError, setIsDownloadError] = useState(false);
