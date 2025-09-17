@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: github-analyzer-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+    domains:
+      - your-domain.com # Replace with your actual domain
+
+  - type: web
+    name: github-analyzer-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+    domains:
+      - your-frontend-domain.com # Replace with your actual domain

@@ -1,0 +1,637 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations for ASMR-like experience - Homepage only */
+.homepage-asmr {
+  scroll-behavior: smooth;
+  /* Ensure proper mobile viewport handling */
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+.homepage-asmr * {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Ensure smooth animations on mobile */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@keyframes homepage-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.2s ease-out;
+}
+
+@keyframes homepage-gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+@keyframes homepage-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes homepage-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+}
+
+.homepage-asmr .animate-fade-in-up {
+  animation: homepage-fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+  /* Optimize for mobile performance */
+  will-change: transform, opacity;
+}
+
+.homepage-asmr .animate-gradient-x {
+  background-size: 200% 200%;
+  animation: homepage-gradient-x 3s ease infinite;
+}
+
+.homepage-asmr .animate-float {
+  animation: homepage-float 3s ease-in-out infinite;
+}
+
+.homepage-asmr .animate-glow {
+  animation: homepage-glow 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar for homepage only */
+.homepage-asmr::-webkit-scrollbar {
+  width: 8px;
+}
+
+.homepage-asmr::-webkit-scrollbar-track {
+  background: rgba(17, 24, 39, 0.5);
+}
+
+.homepage-asmr::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #3B82F6, #6366F1);
+  border-radius: 4px;
+}
+
+.homepage-asmr::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #2563EB, #4F46E5);
+}
+
+/* Enhanced focus states for homepage */
+.homepage-asmr button:focus-visible,
+.homepage-asmr input:focus-visible,
+.homepage-asmr textarea:focus-visible {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Mobile-specific touch enhancements */
+@media (max-width: 768px) {
+  .homepage-asmr button,
+  .homepage-asmr input,
+  .homepage-asmr textarea {
+    /* Improve touch targets */
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .homepage-asmr .hover\:scale-105:hover {
+    /* Reduce scale on mobile for better performance */
+    transform: scale(1.02);
+  }
+  
+  .homepage-asmr .hover\:scale-110:hover {
+    /* Reduce scale on mobile for better performance */
+    transform: scale(1.05);
+  }
+}
+
+/* Custom responsive utilities */
+@layer utilities {
+  /* Ensure proper overflow handling */
+  .overflow-safe {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Custom scrollbar for webkit browsers */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+  }
+
+  /* Ensure text doesn't overflow on mobile */
+  .text-overflow-safe {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Mobile-specific animation utilities */
+  .mobile-optimized {
+    /* Reduce motion for better mobile performance */
+    @media (max-width: 768px) {
+      animation-duration: 0.3s !important;
+      transition-duration: 0.2s !important;
+    }
+  }
+
+  /* Touch-friendly spacing */
+  .touch-friendly {
+    padding: 12px;
+    @media (max-width: 768px) {
+      padding: 16px;
+    }
+  }
+
+  /* Mobile-optimized gradients */
+  .gradient-mobile {
+    background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+    @media (max-width: 768px) {
+      /* Simpler gradient for mobile performance */
+      background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+    }
+  }
+
+  /* Custom focus styles for better accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+  }
+
+  /* Smooth transitions for responsive changes */
+  .responsive-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Custom slider styling */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .slider::-webkit-slider-track {
+    background: linear-gradient(90deg, #374151 0%, #4b5563 50%, #374151 100%);
+    height: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(75, 85, 99, 0.5);
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #1f2937;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .slider::-webkit-slider-thumb:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: scale(1.15);
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .slider::-webkit-slider-thumb:active {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+    transform: scale(1.25);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.5), 0 6px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .slider::-moz-range-track {
+    background: linear-gradient(90deg, #374151 0%, #4b5563 50%, #374151 100%);
+    height: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(75, 85, 99, 0.5);
+  }
+
+  .slider::-moz-range-thumb {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #1f2937;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .slider::-moz-range-thumb:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: scale(1.15);
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .slider::-moz-range-thumb:active {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+    transform: scale(1.25);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.5), 0 6px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Disabled slider styling */
+  .slider:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .slider:disabled::-webkit-slider-track {
+    background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+    border: 1px solid rgba(31, 41, 55, 0.5);
+  }
+
+  .slider:disabled::-webkit-slider-thumb {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    border: 3px solid #1f2937;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+  }
+
+  .slider:disabled::-webkit-slider-thumb:hover {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .slider:disabled::-moz-range-track {
+    background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+    border: 1px solid rgba(31, 41, 55, 0.5);
+  }
+
+  .slider:disabled::-moz-range-thumb {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    border: 3px solid #1f2937;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+  }
+
+  .slider:disabled::-moz-range-thumb:hover {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Animation utilities for login/signup switching */
+  .animate-in {
+    animation: animateIn 0.3s ease-out;
+  }
+
+  .slide-in-from-top-2 {
+    animation: slideInFromTop 0.3s ease-out;
+  }
+
+  @keyframes animateIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideInFromTop {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Custom animations for enhanced UI */
+  .animate-reverse {
+    animation-direction: reverse;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+    }
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes slideInFromBottom {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-in-bottom {
+    animation: slideInFromBottom 0.3s ease-out;
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.3s ease-out;
+  }
+
+  @keyframes slideOutToTop {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+
+  .animate-slide-out-top {
+    animation: slideOutToTop 0.3s ease-in;
+  }
+}
+
+/* Ensure proper viewport handling on mobile */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Mobile-specific homepage optimizations */
+@media (max-width: 768px) {
+  /* Reduce animation intensity on mobile for better performance */
+  .homepage-asmr .animate-gradient-x {
+    animation-duration: 4s;
+  }
+  
+  .homepage-asmr .animate-float {
+    animation-duration: 4s;
+  }
+  
+  .homepage-asmr .animate-glow {
+    animation-duration: 3s;
+  }
+  
+  /* Thinner scrollbar on mobile */
+  .homepage-asmr::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .homepage-asmr::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+  }
+  
+  /* Enhanced focus for mobile touch */
+  .homepage-asmr button:focus-visible,
+  .homepage-asmr input:focus-visible,
+  .homepage-asmr textarea:focus-visible {
+    outline-width: 3px;
+    outline-offset: 1px;
+  }
+  
+  /* Improve touch targets */
+  .homepage-asmr button,
+  .homepage-asmr input,
+  .homepage-asmr textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Reduce scale effects on mobile for better performance */
+  .homepage-asmr .hover\:scale-105:hover {
+    transform: scale(1.02);
+  }
+  
+  .homepage-asmr .hover\:scale-110:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Mobile-optimized animations */
+  .homepage-asmr .mobile-optimized {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Touch-friendly spacing */
+  .homepage-asmr .touch-friendly {
+    padding: 16px;
+  }
+  
+  /* Simpler gradients for mobile performance */
+  .homepage-asmr .gradient-mobile {
+    background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+  }
+  
+  /* Enhanced mobile background effects */
+  .homepage-asmr::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(71, 85, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(107, 114, 128, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  /* Mobile-specific text enhancements */
+  .homepage-asmr h1,
+  .homepage-asmr h2,
+  .homepage-asmr h3 {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Enhanced mobile button styles */
+  .homepage-asmr .bg-gradient-to-r {
+    background-size: 200% 200%;
+    animation: homepage-gradient-x 4s ease infinite;
+  }
+  
+  /* Mobile card enhancements */
+  .homepage-asmr .bg-white\/10 {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Mobile-specific hover effects */
+  .homepage-asmr .hover\:bg-white\/20:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  /* Enhanced mobile animations */
+  .homepage-asmr .animate-fade-in-up {
+    animation-duration: 0.6s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Mobile-specific pulse animations */
+  .homepage-asmr .animate-pulse {
+    animation-duration: 3s;
+  }
+  
+  /* Enhanced mobile gradients */
+  .homepage-asmr .bg-gradient-to-br {
+    background-size: 200% 200%;
+    animation: homepage-gradient-x 6s ease infinite;
+  }
+  
+  /* Mobile-specific blur effects */
+  .homepage-asmr .blur-3xl {
+    filter: blur(40px);
+  }
+  
+  /* Enhanced mobile shadows */
+  .homepage-asmr .shadow-lg {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .homepage-asmr .shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Mobile-specific backdrop blur */
+  .homepage-asmr .backdrop-blur-sm {
+    backdrop-filter: blur(8px);
+  }
+  
+  /* Enhanced mobile borders */
+  .homepage-asmr .border {
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Mobile-specific rounded corners */
+  .homepage-asmr .rounded-lg {
+    border-radius: 12px;
+  }
+  
+  .homepage-asmr .rounded-full {
+    border-radius: 9999px;
+  }
+}

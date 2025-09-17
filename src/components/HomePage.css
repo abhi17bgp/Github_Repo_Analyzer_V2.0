@@ -1,0 +1,1213 @@
+/* HomePage.css - Professional GitHub Repository Analysis Tool Styles */
+
+/* GitHub-inspired color palette */
+:root {
+  --github-dark: #0d1117;
+  --github-gray: #161b22;
+  --github-border: #30363d;
+  --github-text: #f0f6fc;
+  --github-text-secondary: #8b949e;
+  --github-accent: #238636;
+  --github-accent-hover: #2ea043;
+  --github-blue: #0969da;
+  --github-blue-hover: #0860ca;
+  --github-orange: #fb8500;
+  --github-purple: #8250df;
+}
+
+/* Professional button styles */
+.github-btn-primary {
+  background: linear-gradient(135deg, var(--github-accent) 0%, var(--github-accent-hover) 100%);
+  color: white;
+  border: 1px solid var(--github-accent);
+  box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.github-btn-primary:hover {
+  background: linear-gradient(135deg, var(--github-accent-hover) 0%, #2ea043 100%);
+  border-color: var(--github-accent-hover);
+  box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
+  transform: translateY(-2px);
+}
+
+.github-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(35, 134, 54, 0.3);
+}
+
+.github-btn-secondary {
+  background: linear-gradient(135deg, var(--github-blue) 0%, var(--github-blue-hover) 100%);
+  color: white;
+  border: 1px solid var(--github-blue);
+  box-shadow: 0 4px 12px rgba(9, 105, 218, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.github-btn-secondary:hover {
+  background: linear-gradient(135deg, var(--github-blue-hover) 0%, #0860ca 100%);
+  border-color: var(--github-blue-hover);
+  box-shadow: 0 6px 20px rgba(9, 105, 218, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Professional animations for GitHub tool feel */
+@keyframes github-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes github-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes github-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(35, 134, 54, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(35, 134, 54, 0.6), 0 0 40px rgba(35, 134, 54, 0.3);
+  }
+}
+
+@keyframes github-shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.8;
+  }
+}
+
+/* Removed github-slide-in animation */
+
+@keyframes github-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes github-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Professional animation classes */
+.github-animate-pulse {
+  animation: github-pulse 2s ease-in-out infinite;
+}
+
+.github-animate-float {
+  animation: github-float 3s ease-in-out infinite;
+}
+
+.github-animate-glow {
+  animation: github-glow 2s ease-in-out infinite;
+}
+
+.github-animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200% 100%;
+  animation: github-shimmer 2s infinite;
+}
+
+/* Removed slide-in animation class */
+
+.github-animate-fade-in-up {
+  animation: github-fade-in-up 0.8s ease-out;
+}
+
+.github-animate-scale-in {
+  animation: github-scale-in 0.5s ease-out;
+}
+
+/* Professional card styles */
+.github-card {
+  background: rgba(22, 27, 34, 0.8);
+  border: 1px solid var(--github-border);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.github-card:hover {
+  background: rgba(22, 27, 34, 0.9);
+  border-color: var(--github-accent);
+  box-shadow: 0 8px 25px rgba(35, 134, 54, 0.2);
+  transform: translateY(-4px);
+}
+
+/* Professional icon styles */
+.github-icon {
+  color: var(--github-accent);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.github-icon:hover {
+  color: var(--github-accent-hover);
+  transform: scale(1.1);
+}
+
+/* Professional text styles */
+.github-text-primary {
+  color: var(--github-text);
+}
+
+.github-text-secondary {
+  color: var(--github-text-secondary);
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Lazy loading animations - Slower for elegance */
+.animate-fade-in-up {
+  animation: fadeInUp 1.2s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero section specific animations - Removed slide-in */
+
+.github-animate-scale-in {
+  animation: scaleIn 1.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Removed slideInFromLeft animation */
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Back to top button animations - Removed slide animation */
+
+/* GitHub-specific background animations - Enhanced & Slower */
+.github-bg-element {
+  background: radial-gradient(circle, rgba(35, 134, 54, 0.2) 0%, rgba(35, 134, 54, 0.05) 50%, transparent 70%);
+  animation: github-float 6s ease-in-out infinite;
+  box-shadow: 0 0 50px rgba(35, 134, 54, 0.3);
+}
+
+.github-bg-element:nth-child(2) {
+  animation-delay: 1s;
+  background: radial-gradient(circle, rgba(9, 105, 218, 0.2) 0%, rgba(9, 105, 218, 0.05) 50%, transparent 70%);
+  box-shadow: 0 0 50px rgba(9, 105, 218, 0.3);
+}
+
+.github-bg-element:nth-child(3) {
+  animation-delay: 2s;
+  background: radial-gradient(circle, rgba(130, 80, 223, 0.2) 0%, rgba(130, 80, 223, 0.05) 50%, transparent 70%);
+  box-shadow: 0 0 50px rgba(130, 80, 223, 0.3);
+}
+
+/* Additional GitHub visual elements */
+.github-particles {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--github-accent);
+  border-radius: 50%;
+  animation: github-particles-float 8s linear infinite;
+  box-shadow: 0 0 10px rgba(35, 134, 54, 0.6);
+}
+
+.github-particles:nth-child(1) { top: 40%; left: 30%; animation-delay: 0s; }
+.github-particles:nth-child(2) { top: 40%; right: 25%; animation-delay: 2s; }
+.github-particles:nth-child(3) { top: 60%; left: 35%; animation-delay: 4s; }
+.github-particles:nth-child(4) { top: 80%; right: 20%; animation-delay: 6s; }
+.github-particles:nth-child(5) { top: 50%; left: 75%; animation-delay: 1s; }
+.github-particles:nth-child(6) { top: 70%; right: 65%; animation-delay: 3s; }
+
+@keyframes github-particles-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(-200px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-250px) scale(0);
+  }
+}
+
+/* GitHub connection lines */
+.github-connections {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(35, 134, 54, 0.4), transparent);
+  animation: github-connections-draw 6s ease-in-out infinite;
+}
+
+.github-connections:nth-child(1) { 
+  top: 50%; left: 25%; width: 100px; animation-delay: 0s; 
+}
+.github-connections:nth-child(2) { 
+  top: 55%; right: 25%; width: 80px; animation-delay: 1s; 
+}
+.github-connections:nth-child(3) { 
+  top: 75%; left: 35%; width: 120px; animation-delay: 2s; 
+}
+
+@keyframes github-connections-draw {
+  0%, 100% {
+    width: 0;
+    opacity: 0;
+  }
+  50% {
+    width: 100px;
+    opacity: 0.6;
+  }
+}
+
+/* Removed unused code float animations for cleaner CSS */
+
+/* GitHub branch-like lines - Enhanced & Slower */
+.github-branch {
+  position: absolute;
+  width: 3px;
+  height: 150px;
+  background: linear-gradient(to bottom, rgba(35, 134, 54, 0.8), rgba(35, 134, 54, 0.2), transparent);
+  animation: github-branch-grow 7s ease-in-out infinite;
+  box-shadow: 0 0 15px rgba(35, 134, 54, 0.4);
+  border-radius: 2px;
+}
+
+.github-branch:nth-child(1) { top: 45%; left: 40%; animation-delay: 0s; }
+.github-branch:nth-child(2) { top: 45%; right: 30%; animation-delay: 1.5s; }
+.github-branch:nth-child(3) { top: 70%; left: 35%; animation-delay: 3s; }
+
+@keyframes github-branch-grow {
+  0%, 100% {
+    height: 0;
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  50% {
+    height: 150px;
+    opacity: 0.8;
+    transform: scaleY(1);
+  }
+}
+
+/* Removed unused commit dot animations for cleaner CSS */
+
+/* GitHub Navbar Styling */
+.github-navbar {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+  border-bottom: 1px solid rgba(35, 134, 54, 0.2);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.github-nav-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.github-nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #238636, #2ea043);
+  transition: width 0.3s ease;
+}
+
+.github-nav-link:hover::before {
+  width: 100%;
+}
+
+.github-user-btn:hover {
+  transform: translateY(-1px);
+}
+
+.github-dropdown {
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+  border: 1px solid rgba(35, 134, 54, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.github-dropdown-item:hover {
+  background: linear-gradient(90deg, rgba(35, 134, 54, 0.1), rgba(35, 134, 54, 0.05));
+}
+
+.github-signin-btn:hover {
+  color: #2ea043;
+}
+
+.github-mobile-btn:hover {
+  background: rgba(35, 134, 54, 0.1);
+}
+
+.github-mobile-menu {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+  border-top: 1px solid rgba(35, 134, 54, 0.2);
+}
+
+.github-mobile-nav-item:hover {
+  background: linear-gradient(90deg, rgba(35, 134, 54, 0.1), rgba(35, 134, 54, 0.05));
+}
+
+.github-mobile-close:hover {
+  background: rgba(35, 134, 54, 0.1);
+}
+
+.github-mobile-signin:hover {
+  background: linear-gradient(90deg, rgba(35, 134, 54, 0.1), rgba(35, 134, 54, 0.05));
+}
+
+.github-mobile-logout:hover {
+  background: linear-gradient(90deg, rgba(35, 134, 54, 0.1), rgba(35, 134, 54, 0.05));
+}
+
+.github-modal {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+  border: 1px solid rgba(35, 134, 54, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+.github-modal-close:hover {
+  background: rgba(35, 134, 54, 0.1);
+  border-radius: 6px;
+}
+
+/* GitHub repository grid pattern - Enhanced */
+.github-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(35, 134, 54, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 134, 54, 0.25) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: github-grid-move 15s linear infinite;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+@keyframes github-grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(40px, 0);
+  }
+}
+
+/* GitHub file tree branches - Enhanced */
+.github-file-tree {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.github-file-tree::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 2px;
+  height: 250px;
+  background: linear-gradient(to bottom, rgba(35, 134, 54, 0.6), rgba(35, 134, 54, 0.2), transparent);
+  animation: github-tree-grow 6s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(35, 134, 54, 0.4);
+  border-radius: 1px;
+}
+
+.github-file-tree::after {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 22%;
+  width: 2px;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(9, 105, 218, 0.6), rgba(9, 105, 218, 0.2), transparent);
+  animation: github-tree-grow 6s ease-in-out infinite;
+  animation-delay: 1.5s;
+  box-shadow: 0 0 10px rgba(9, 105, 218, 0.4);
+  border-radius: 1px;
+}
+
+@keyframes github-tree-grow {
+  0%, 100% {
+    height: 0;
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  50% {
+    height: 250px;
+    opacity: 0.6;
+    transform: scaleY(1);
+  }
+}
+
+/* Professional loading states */
+.github-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.github-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: github-shimmer 1.5s infinite;
+}
+
+/* Professional hover effects */
+.github-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.github-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Professional focus states */
+.github-focus {
+  outline: 2px solid var(--github-accent);
+  outline-offset: 2px;
+}
+
+/* Professional responsive design */
+@media (max-width: 768px) {
+  .github-btn-primary,
+  .github-btn-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+  
+  .github-card {
+    margin: 8px;
+  }
+  
+  .github-animate-float {
+    animation-duration: 4s;
+  }
+  
+  .github-animate-pulse {
+    animation-duration: 3s;
+  }
+}
+
+/* Professional scrollbar */
+.github-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.github-scrollbar::-webkit-scrollbar-track {
+  background: var(--github-gray);
+}
+
+.github-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--github-border);
+  border-radius: 4px;
+}
+
+.github-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--github-accent);
+}
+
+/* Professional gradient text - Greenish theme */
+.github-gradient-text {
+  background: linear-gradient(135deg, #238636 0%, #2ea043 30%, #3fb950 60%, #56d364 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: github-shimmer 4s ease-in-out infinite;
+}
+
+/* Professional border animations */
+.github-border-animate {
+  position: relative;
+  border: 1px solid var(--github-border);
+}
+
+.github-border-animate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid var(--github-accent);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.github-border-animate:hover::before {
+  opacity: 1;
+}
+
+/* Professional tooltip styles */
+.github-tooltip {
+  position: relative;
+}
+
+.github-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--github-gray);
+  color: var(--github-text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border: 1px solid var(--github-border);
+}
+
+.github-tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Additional GitHub-themed animations */
+.github-grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(9, 105, 218, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(9, 105, 218, 0.1) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: github-grid-move-reverse 25s linear infinite;
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+@keyframes github-grid-move-reverse {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, -80px);
+  }
+}
+
+/* GitHub commit dots animation */
+.github-commit-dots {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(35, 134, 54, 0.6);
+  border-radius: 50%;
+  animation: github-commit-pulse 3s ease-in-out infinite;
+}
+
+@keyframes github-commit-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* GitHub branch lines animation */
+.github-branch-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(35, 134, 54, 0.4), transparent);
+  animation: github-branch-flow 4s ease-in-out infinite;
+}
+
+@keyframes github-branch-flow {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* GitHub code syntax highlighting effect */
+.github-syntax-glow {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(35, 134, 54, 0.3), 
+    rgba(9, 105, 218, 0.3), 
+    rgba(35, 134, 54, 0.3), 
+    transparent
+  );
+  animation: github-syntax-scan 6s linear infinite;
+}
+
+@keyframes github-syntax-scan {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* GitHub repository icon floating animation */
+.github-repo-float {
+  animation: github-repo-float 8s ease-in-out infinite;
+}
+
+@keyframes github-repo-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(-1deg);
+  }
+}
+
+/* GitHub terminal cursor blink */
+.github-cursor-blink {
+  animation: github-cursor-blink 1s infinite;
+}
+
+@keyframes github-cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Removed old file tree demo - replaced with D3.js style */
+
+/* Repository structure visualization */
+.github-repo-structure {
+  position: absolute;
+  top: 17%;
+  left: 5%;
+  width: 180px;
+  height: 250px;
+  background: rgba(13, 17, 23, 0.7);
+  border: 1px solid rgba(9, 105, 218, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+  opacity: 0.6;
+  animation: github-repo-structure-float-slow 10s ease-in-out infinite;
+}
+
+/* Hide repository structure on mobile */
+@media (max-width: 768px) {
+  .github-repo-structure {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes github-repo-structure-float-slow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-6px) translateX(2px) rotate(0.5deg);
+  }
+  40% {
+    transform: translateY(-3px) translateX(-1px) rotate(0deg);
+  }
+  60% {
+    transform: translateY(-8px) translateX(1px) rotate(-0.5deg);
+  }
+  80% {
+    transform: translateY(-4px) translateX(-2px) rotate(0.3deg);
+  }
+}
+
+.github-repo-folder {
+  display: flex;
+  align-items: center;
+  margin: 3px 0;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  animation: github-repo-folder-sway 7s ease-in-out infinite;
+}
+
+.github-repo-folder:nth-child(1) { animation-delay: 0s; }
+.github-repo-folder:nth-child(2) { animation-delay: 0.7s; }
+.github-repo-folder:nth-child(3) { animation-delay: 1.4s; }
+.github-repo-folder:nth-child(4) { animation-delay: 2.1s; }
+.github-repo-folder:nth-child(5) { animation-delay: 2.8s; }
+.github-repo-folder:nth-child(6) { animation-delay: 3.5s; }
+
+.github-repo-folder:hover {
+  background: rgba(9, 105, 218, 0.2);
+  transform: translateX(3px);
+}
+
+@keyframes github-repo-folder-sway {
+  0%, 100% {
+    transform: translateX(0px);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateX(2px);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translateX(-1px);
+    opacity: 0.8;
+  }
+  90% {
+    transform: translateX(1px);
+    opacity: 1;
+  }
+}
+
+.github-repo-folder-icon {
+  margin-right: 6px;
+  color: #0969da;
+  animation: github-repo-icon-bounce 6s ease-in-out infinite;
+}
+
+@keyframes github-repo-icon-bounce {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  25% {
+    transform: translateY(-2px) scale(1.05);
+  }
+  50% {
+    transform: translateY(0px) scale(1);
+  }
+  75% {
+    transform: translateY(-1px) scale(1.02);
+  }
+}
+
+.github-repo-folder-name {
+  color: #8b949e;
+  font-size: 11px;
+  transition: color 0.3s ease;
+  animation: github-repo-text-fade 8s ease-in-out infinite;
+}
+
+@keyframes github-repo-text-fade {
+  0%, 100% {
+    color: #8b949e;
+    opacity: 0.8;
+  }
+  50% {
+    color: #238636;
+    opacity: 1;
+  }
+}
+
+.github-repo-folder:hover .github-repo-folder-name {
+  color: #f0f6fc;
+}
+
+/* D3.js Style Tree Visualization */
+.github-d3-tree-container {
+  position: absolute;
+  top: 13%;
+  right: 4%;
+  width: 200px;
+  height: 280px;
+  background: rgba(13, 17, 23, 0.85);
+  border: 1px solid rgba(35, 134, 54, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(15px);
+  z-index: 10;
+  overflow: hidden;
+  opacity: 0.5;
+  animation: github-d3-tree-float-slow 8s ease-in-out infinite;
+}
+
+/* Hide card animations on mobile */
+@media (max-width: 768px) {
+  .github-d3-tree-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes github-d3-tree-float-slow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) translateX(4px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) translateX(0px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-12px) translateX(-3px) rotate(-1deg);
+  }
+}
+
+.github-d3-tree-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.github-d3-tree-node {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: github-d3-tree-node-sway 6s ease-in-out infinite;
+}
+
+.github-d3-tree-node:hover {
+  transform: scale(1.1);
+}
+
+@keyframes github-d3-tree-node-sway {
+  0%, 100% {
+    transform: translateX(0px);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateX(2px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(0px);
+    opacity: 0.9;
+  }
+  75% {
+    transform: translateX(-1px);
+    opacity: 1;
+  }
+}
+
+.github-d3-tree-node-circle {
+  fill: #238636;
+  stroke: #2ea043;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.github-d3-tree-node-circle:hover {
+  fill: #2ea043;
+  stroke: #3fb950;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px rgba(35, 134, 54, 0.6));
+}
+
+.github-d3-tree-node-text {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 10px;
+  fill: #f0f6fc;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.github-d3-tree-link {
+  fill: none;
+  stroke: #8b949e;
+  stroke-width: 2;
+  stroke-opacity: 0.6;
+  transition: all 0.5s ease;
+}
+
+.github-d3-tree-link:hover {
+  stroke: #238636;
+  stroke-width: 3;
+  stroke-opacity: 1;
+}
+
+.github-d3-tree-link-animated {
+  stroke-dasharray: 5,5;
+  animation: github-d3-tree-dash 2s linear infinite;
+}
+
+@keyframes github-d3-tree-dash {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 20;
+  }
+}
+
+.github-d3-tree-expand {
+  animation: github-d3-tree-expand 0.8s ease-out;
+}
+
+@keyframes github-d3-tree-expand {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.github-d3-tree-pulse {
+  animation: github-d3-tree-pulse 2s ease-in-out infinite;
+}
+
+@keyframes github-d3-tree-pulse {
+  0%, 100% {
+    r: 6;
+    opacity: 0.8;
+  }
+  50% {
+    r: 8;
+    opacity: 1;
+  }
+}
+
+.github-d3-tree-title {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  color: #f0f6fc;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.github-d3-tree-subtitle {
+  position: absolute;
+  top: 30px;
+  left: 15px;
+  color: #8b949e;
+  font-size: 11px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* File Tree Card Animation */
+.github-file-tree-card {
+  position: absolute;
+  top: 17%;
+  left: 8%;
+  width: 160px;
+  height: 220px;
+  background: rgba(13, 17, 23, 0.8);
+  border: 1px solid rgba(35, 134, 54, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  backdrop-filter: blur(12px);
+  z-index: 10;
+  opacity: 0.6;
+  animation: github-file-tree-card-float 8s ease-in-out infinite;
+}
+
+/* Hide file tree card on mobile */
+@media (max-width: 768px) {
+  .github-file-tree-card {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes github-file-tree-card-float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) translateX(4px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) translateX(0px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-12px) translateX(-3px) rotate(-1deg);
+  }
+}
+
+.github-file-tree-card-item {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  padding: 3px 6px;
+  border-radius: 4px;
+  transition: all 0.4s ease;
+  animation: github-file-tree-card-sway 6s ease-in-out infinite;
+}
+
+.github-file-tree-card-item:nth-child(1) { animation-delay: 0s; }
+.github-file-tree-card-item:nth-child(2) { animation-delay: 0.5s; }
+.github-file-tree-card-item:nth-child(3) { animation-delay: 1s; }
+.github-file-tree-card-item:nth-child(4) { animation-delay: 1.5s; }
+.github-file-tree-card-item:nth-child(5) { animation-delay: 2s; }
+.github-file-tree-card-item:nth-child(6) { animation-delay: 2.5s; }
+
+@keyframes github-file-tree-card-sway {
+  0%, 100% {
+    transform: translateX(0px);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(0px);
+    opacity: 0.9;
+  }
+  75% {
+    transform: translateX(-2px);
+    opacity: 1;
+  }
+}
+
+.github-file-tree-card-icon {
+  margin-right: 8px;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: github-file-tree-card-icon-pulse 4s ease-in-out infinite;
+}
+
+@keyframes github-file-tree-card-icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.github-file-tree-card-name {
+  color: #8b949e;
+  font-size: 11px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  transition: color 0.3s ease;
+  animation: github-file-tree-card-text-glow 5s ease-in-out infinite;
+}
+
+@keyframes github-file-tree-card-text-glow {
+  0%, 100% {
+    color: #8b949e;
+    text-shadow: none;
+  }
+  50% {
+    color: #f0f6fc;
+    text-shadow: 0 0 4px rgba(35, 134, 54, 0.3);
+  }
+}
+
+.github-file-tree-card-title {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  color: #f0f6fc;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.github-file-tree-card-subtitle {
+  position: absolute;
+  top: 25px;
+  left: 12px;
+  color: #8b949e;
+  font-size: 9px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
