@@ -11,37 +11,44 @@ if (process.env.GEMINI_API_KEY) {
 }
 
 // Helper function to validate and sanitize AI response
-const validateAnalysisResponse = (analysis, fileName = '') => {
+const validateAnalysisResponse = (analysis, fileName = "") => {
   const defaultResponse = {
     summary: "Analysis not available",
     keyFunctions: [],
     cleanCode: null,
     issues: [],
     improvements: [],
-    libraries: []
+    libraries: [],
   };
 
-  if (!analysis || typeof analysis !== 'object') {
+  if (!analysis || typeof analysis !== "object") {
     return defaultResponse;
   }
 
   // Enhanced summary validation with fallback based on file type
-  let summary = typeof analysis.summary === 'string' ? analysis.summary.trim() : defaultResponse.summary;
-  
+  let summary =
+    typeof analysis.summary === "string"
+      ? analysis.summary.trim()
+      : defaultResponse.summary;
+
   // If summary is too generic, provide a more meaningful fallback
   if (summary === defaultResponse.summary || summary.length < 20) {
-    const fileExtension = fileName.split('.').pop()?.toLowerCase() || '';
-    const isReadme = fileName.toLowerCase().includes('readme');
-    
+    const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
+    const isReadme = fileName.toLowerCase().includes("readme");
+
     if (isReadme) {
-      summary = "This README file contains project documentation, setup instructions, and important information about the repository.";
-    } else if (fileExtension === 'json') {
-      summary = "This JSON file contains structured data, likely configuration or package information.";
-    } else if (fileExtension === 'md') {
-      summary = "This Markdown file contains formatted documentation or project information.";
-    } else if (fileExtension === 'js' || fileExtension === 'ts') {
-      summary = "This JavaScript/TypeScript file contains executable code and logic.";
-    } else if (fileExtension === 'py') {
+      summary =
+        "This README file contains project documentation, setup instructions, and important information about the repository.";
+    } else if (fileExtension === "json") {
+      summary =
+        "This JSON file contains structured data, likely configuration or package information.";
+    } else if (fileExtension === "md") {
+      summary =
+        "This Markdown file contains formatted documentation or project information.";
+    } else if (fileExtension === "js" || fileExtension === "ts") {
+      summary =
+        "This JavaScript/TypeScript file contains executable code and logic.";
+    } else if (fileExtension === "py") {
       summary = "This Python file contains executable code and logic.";
     } else {
       summary = `This ${fileExtension.toUpperCase()} file contains structured content and information.`;
@@ -50,26 +57,42 @@ const validateAnalysisResponse = (analysis, fileName = '') => {
 
   return {
     summary: summary,
-    keyFunctions: Array.isArray(analysis.keyFunctions) 
-      ? analysis.keyFunctions.filter(func => 
-          func && typeof func === 'object' && 
-          typeof func.name === 'string' && 
-          typeof func.description === 'string'
-        ).map(func => ({
-          name: func.name.trim(),
-          description: func.description.trim()
-        }))
+    keyFunctions: Array.isArray(analysis.keyFunctions)
+      ? analysis.keyFunctions
+          .filter(
+            (func) =>
+              func &&
+              typeof func === "object" &&
+              typeof func.name === "string" &&
+              typeof func.description === "string"
+          )
+          .map((func) => ({
+            name: func.name.trim(),
+            description: func.description.trim(),
+          }))
       : defaultResponse.keyFunctions,
-    cleanCode: typeof analysis.cleanCode === 'boolean' ? analysis.cleanCode : null,
-    issues: Array.isArray(analysis.issues) 
-      ? analysis.issues.filter(issue => typeof issue === 'string' && issue.trim().length > 0).map(issue => issue.trim())
+    cleanCode:
+      typeof analysis.cleanCode === "boolean" ? analysis.cleanCode : null,
+    issues: Array.isArray(analysis.issues)
+      ? analysis.issues
+          .filter(
+            (issue) => typeof issue === "string" && issue.trim().length > 0
+          )
+          .map((issue) => issue.trim())
       : defaultResponse.issues,
-    improvements: Array.isArray(analysis.improvements) 
-      ? analysis.improvements.filter(improvement => typeof improvement === 'string' && improvement.trim().length > 0).map(improvement => improvement.trim())
+    improvements: Array.isArray(analysis.improvements)
+      ? analysis.improvements
+          .filter(
+            (improvement) =>
+              typeof improvement === "string" && improvement.trim().length > 0
+          )
+          .map((improvement) => improvement.trim())
       : defaultResponse.improvements,
-    libraries: Array.isArray(analysis.libraries) 
-      ? analysis.libraries.filter(lib => typeof lib === 'string' && lib.trim().length > 0).map(lib => lib.trim())
-      : defaultResponse.libraries
+    libraries: Array.isArray(analysis.libraries)
+      ? analysis.libraries
+          .filter((lib) => typeof lib === "string" && lib.trim().length > 0)
+          .map((lib) => lib.trim())
+      : defaultResponse.libraries,
   };
 };
 
@@ -87,26 +110,44 @@ router.post("/analyze-code", authMiddleware, async (req, res) => {
     }
 
     // Get the generative model with generation config for better JSON output
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
       generationConfig: {
         temperature: 0.1, // Lower temperature for more consistent output
         topP: 0.8,
         topK: 40,
         maxOutputTokens: 2048,
-      }
+      },
     });
 
     // Detect file type and create context-aware prompt
-    const fileExtension = fileName.split('.').pop()?.toLowerCase() || '';
-    const isReadme = fileName.toLowerCase().includes('readme');
-    const isConfig = ['json', 'yaml', 'yml', 'toml', 'ini', 'cfg', 'conf'].includes(fileExtension);
-    const isDocumentation = ['md', 'markdown', 'rst', 'txt'].includes(fileExtension);
-    const isScript = ['sh', 'bash', 'ps1', 'bat', 'cmd'].includes(fileExtension);
-    const isPackage = ['package.json', 'requirements.txt', 'pom.xml', 'build.gradle', 'cargo.toml'].some(pkg => fileName.toLowerCase().includes(pkg));
+    const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
+    const isReadme = fileName.toLowerCase().includes("readme");
+    const isConfig = [
+      "json",
+      "yaml",
+      "yml",
+      "toml",
+      "ini",
+      "cfg",
+      "conf",
+    ].includes(fileExtension);
+    const isDocumentation = ["md", "markdown", "rst", "txt"].includes(
+      fileExtension
+    );
+    const isScript = ["sh", "bash", "ps1", "bat", "cmd"].includes(
+      fileExtension
+    );
+    const isPackage = [
+      "package.json",
+      "requirements.txt",
+      "pom.xml",
+      "build.gradle",
+      "cargo.toml",
+    ].some((pkg) => fileName.toLowerCase().includes(pkg));
 
-    let contextPrompt = '';
-    
+    let contextPrompt = "";
+
     if (isReadme) {
       contextPrompt = `This is a README file that contains project documentation, setup instructions, and project information. Analyze it as documentation rather than code.`;
     } else if (isConfig) {
@@ -145,23 +186,26 @@ JSON:`;
     let rawAnalysis = "";
     let attempts = 0;
     const maxAttempts = 2;
-    
+
     while (attempts < maxAttempts) {
       try {
         const result = await model.generateContent(prompt);
         const response = await result.response;
         rawAnalysis = response.text();
-        
+
         // Quick check if response looks like JSON
-        if (rawAnalysis.trim().startsWith('{') && rawAnalysis.trim().endsWith('}')) {
+        if (
+          rawAnalysis.trim().startsWith("{") &&
+          rawAnalysis.trim().endsWith("}")
+        ) {
           break; // Looks like valid JSON, proceed
         }
-        
+
         attempts++;
         if (attempts < maxAttempts) {
           console.log(`Attempt ${attempts} failed, retrying...`);
           // Add a small delay before retry
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
         }
       } catch (error) {
         console.error(`Attempt ${attempts + 1} failed:`, error);
@@ -177,59 +221,84 @@ JSON:`;
     try {
       // Clean the response in case there are any extra characters
       let cleanedResponse = rawAnalysis.trim();
-      
+
       // Remove common markdown formatting that might interfere
-      cleanedResponse = cleanedResponse.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
-      cleanedResponse = cleanedResponse.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
-      
+      cleanedResponse = cleanedResponse
+        .replace(/^```json\s*/i, "")
+        .replace(/\s*```$/i, "");
+      cleanedResponse = cleanedResponse
+        .replace(/^```\s*/i, "")
+        .replace(/\s*```$/i, "");
+
       // Try to find JSON object in the response if it's wrapped in other text
       const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         cleanedResponse = jsonMatch[0];
       }
-      
+
       // Additional cleaning for common issues
-      cleanedResponse = cleanedResponse.replace(/^[^{]*/, ''); // Remove text before first {
-      cleanedResponse = cleanedResponse.replace(/[^}]*$/, ''); // Remove text after last }
-      
+      cleanedResponse = cleanedResponse.replace(/^[^{]*/, ""); // Remove text before first {
+      cleanedResponse = cleanedResponse.replace(/[^}]*$/, ""); // Remove text after last }
+
       console.log("Cleaned AI response:", cleanedResponse);
-      
+
       const parsedResponse = JSON.parse(cleanedResponse);
-      
+
       // Validate and sanitize the response
       structuredAnalysis = validateAnalysisResponse(parsedResponse, fileName);
     } catch (parseError) {
       console.error("Failed to parse AI response as JSON:", parseError);
       console.error("Raw AI response:", rawAnalysis);
-      
+
       // Try to extract some information from the raw response as fallback
-      const fileExtension = fileName.split('.').pop()?.toLowerCase() || '';
-      const isReadme = fileName.toLowerCase().includes('readme');
-      
-      let fallbackSummary = "Analysis completed but response format was invalid";
+      const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
+      const isReadme = fileName.toLowerCase().includes("readme");
+
+      let fallbackSummary =
+        "Analysis completed but response format was invalid";
       let fallbackIssues = ["AI response could not be parsed"];
       let fallbackImprovements = ["Please try analyzing the code again"];
-      
+
       // Provide meaningful fallback based on file type
       if (isReadme) {
-        fallbackSummary = "This README file contains project documentation, setup instructions, and important information about the repository. The AI analysis encountered a formatting issue but the file appears to be a standard README.";
-        fallbackIssues = ["AI response formatting issue - content appears to be standard README documentation"];
-        fallbackImprovements = ["Consider re-analyzing the file for detailed insights"];
-      } else if (fileExtension === 'json') {
-        fallbackSummary = "This JSON file contains structured data, likely configuration or package information. The AI analysis encountered a formatting issue.";
-        fallbackIssues = ["AI response formatting issue - file appears to contain valid JSON data"];
-        fallbackImprovements = ["Consider re-analyzing the file for detailed insights"];
-      } else if (fileExtension === 'md') {
-        fallbackSummary = "This Markdown file contains formatted documentation or project information. The AI analysis encountered a formatting issue.";
-        fallbackIssues = ["AI response formatting issue - file appears to contain Markdown documentation"];
-        fallbackImprovements = ["Consider re-analyzing the file for detailed insights"];
+        fallbackSummary =
+          "This README file contains project documentation, setup instructions, and important information about the repository. The AI analysis encountered a formatting issue but the file appears to be a standard README.";
+        fallbackIssues = [
+          "AI response formatting issue - content appears to be standard README documentation",
+        ];
+        fallbackImprovements = [
+          "Consider re-analyzing the file for detailed insights",
+        ];
+      } else if (fileExtension === "json") {
+        fallbackSummary =
+          "This JSON file contains structured data, likely configuration or package information. The AI analysis encountered a formatting issue.";
+        fallbackIssues = [
+          "AI response formatting issue - file appears to contain valid JSON data",
+        ];
+        fallbackImprovements = [
+          "Consider re-analyzing the file for detailed insights",
+        ];
+      } else if (fileExtension === "md") {
+        fallbackSummary =
+          "This Markdown file contains formatted documentation or project information. The AI analysis encountered a formatting issue.";
+        fallbackIssues = [
+          "AI response formatting issue - file appears to contain Markdown documentation",
+        ];
+        fallbackImprovements = [
+          "Consider re-analyzing the file for detailed insights",
+        ];
       }
-      
+
       // Try to extract some meaningful content from the raw response
-      if (rawAnalysis.toLowerCase().includes('error') || rawAnalysis.toLowerCase().includes('bug')) {
-        fallbackIssues.push("Potential issues detected but could not be parsed");
+      if (
+        rawAnalysis.toLowerCase().includes("error") ||
+        rawAnalysis.toLowerCase().includes("bug")
+      ) {
+        fallbackIssues.push(
+          "Potential issues detected but could not be parsed"
+        );
       }
-      
+
       // Fallback to structured response if JSON parsing fails
       structuredAnalysis = {
         summary: fallbackSummary,
@@ -237,7 +306,7 @@ JSON:`;
         cleanCode: null,
         issues: fallbackIssues,
         improvements: fallbackImprovements,
-        libraries: []
+        libraries: [],
       };
     }
 
@@ -245,8 +314,8 @@ JSON:`;
       analysis: structuredAnalysis,
       fileName,
       timestamp: new Date().toISOString(),
-      model: "gemini-1.5-flash",
-      rawResponse: rawAnalysis // Include raw response for debugging
+      model: "gemini-2.5-flash",
+      rawResponse: rawAnalysis, // Include raw response for debugging
     });
   } catch (error) {
     console.error("Gemini AI analysis error:", error);
@@ -261,7 +330,7 @@ JSON:`;
 router.get("/status", authMiddleware, (req, res) => {
   res.json({
     aiEnabled: !!genAI,
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     provider: "Google Gemini",
   });
 });
@@ -275,38 +344,45 @@ router.get("/format", authMiddleware, (req, res) => {
       keyFunctions: [
         {
           name: "string - Function or class name",
-          description: "string - What the function/class does"
-        }
+          description: "string - What the function/class does",
+        },
       ],
-      cleanCode: "boolean - Whether the code is clean and maintainable (null if undetermined)",
-      issues: ["string - Array of detected bugs, code smells, or bad practices"],
+      cleanCode:
+        "boolean - Whether the code is clean and maintainable (null if undetermined)",
+      issues: [
+        "string - Array of detected bugs, code smells, or bad practices",
+      ],
       improvements: ["string - Array of suggestions to improve the code"],
-      libraries: ["string - Array of libraries,Language or  frameworks used(if used)"]
+      libraries: [
+        "string - Array of libraries,Language or  frameworks used(if used)",
+      ],
     },
     example: {
       summary: "A React component that manages user authentication state",
       keyFunctions: [
         {
           name: "useAuth",
-          description: "Custom hook that provides authentication state and methods"
+          description:
+            "Custom hook that provides authentication state and methods",
         },
         {
           name: "AuthProvider",
-          description: "Context provider component that wraps the app with auth state"
-        }
+          description:
+            "Context provider component that wraps the app with auth state",
+        },
       ],
       cleanCode: true,
       issues: [
         "Missing error handling in login function",
-        "Hardcoded API endpoint should be configurable"
+        "Hardcoded API endpoint should be configurable",
       ],
       improvements: [
         "Add try-catch blocks for async operations",
         "Extract API configuration to environment variables",
-        "Add input validation for user credentials"
+        "Add input validation for user credentials",
       ],
-      libraries: ["react", "axios", "react-router-dom"]
-    }
+      libraries: ["react", "axios", "react-router-dom"],
+    },
   });
 });
 
@@ -314,39 +390,43 @@ router.get("/format", authMiddleware, (req, res) => {
 router.post("/test-parse", authMiddleware, async (req, res) => {
   try {
     const { testResponse } = req.body;
-    
+
     if (!testResponse) {
       return res.status(400).json({ message: "testResponse is required" });
     }
 
     // Test the same parsing logic
     let cleanedResponse = testResponse.trim();
-    cleanedResponse = cleanedResponse.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
-    cleanedResponse = cleanedResponse.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
-    
+    cleanedResponse = cleanedResponse
+      .replace(/^```json\s*/i, "")
+      .replace(/\s*```$/i, "");
+    cleanedResponse = cleanedResponse
+      .replace(/^```\s*/i, "")
+      .replace(/\s*```$/i, "");
+
     const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       cleanedResponse = jsonMatch[0];
     }
-    
-    cleanedResponse = cleanedResponse.replace(/^[^{]*/, '');
-    cleanedResponse = cleanedResponse.replace(/[^}]*$/, '');
-    
+
+    cleanedResponse = cleanedResponse.replace(/^[^{]*/, "");
+    cleanedResponse = cleanedResponse.replace(/[^}]*$/, "");
+
     const parsed = JSON.parse(cleanedResponse);
-    const validated = validateAnalysisResponse(parsed, req.body.fileName || '');
-    
+    const validated = validateAnalysisResponse(parsed, req.body.fileName || "");
+
     res.json({
       success: true,
       original: testResponse,
       cleaned: cleanedResponse,
       parsed: parsed,
-      validated: validated
+      validated: validated,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       error: error.message,
-      original: req.body.testResponse
+      original: req.body.testResponse,
     });
   }
 });
@@ -354,7 +434,8 @@ router.post("/test-parse", authMiddleware, async (req, res) => {
 // AI Chat endpoint for project assistant
 router.post("/chat", authMiddleware, async (req, res) => {
   try {
-    const { message, context, conversationHistory, hasPreviousSessions } = req.body;
+    const { message, context, conversationHistory, hasPreviousSessions } =
+      req.body;
 
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
@@ -365,23 +446,23 @@ router.post("/chat", authMiddleware, async (req, res) => {
     }
 
     // Get the generative model
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
       generationConfig: {
         temperature: 0.7,
         topP: 0.8,
         topK: 40,
         maxOutputTokens: 1024,
-      }
+      },
     });
 
     // Build context prompt
-    const username = context.username || 'there';
+    const username = context.username || "there";
     let contextPrompt = `You are a friendly, helpful AI companion named "CodeBuddy" who is assisting ${username} in understanding a GitHub repository. You should be warm, polite, and enthusiastic about helping them explore the project. Always address them by name when appropriate and maintain a supportive, encouraging tone.
 
 You have access to the following project information:
 
-Repository URL: ${context.repositoryUrl || 'Not available'}
+Repository URL: ${context.repositoryUrl || "Not available"}
 
 `;
 
@@ -401,11 +482,11 @@ ${JSON.stringify(context.packageJson, null, 2)}
 
     if (context.repoInfo) {
       contextPrompt += `Repository Information:
-- Language: ${context.repoInfo.language || 'Not specified'}
-- Description: ${context.repoInfo.description || 'No description'}
+- Language: ${context.repoInfo.language || "Not specified"}
+- Description: ${context.repoInfo.description || "No description"}
 - Stars: ${context.repoInfo.stars || 0}
 - Size: ${context.repoInfo.size || 0} KB
-- Homepage: ${context.repoInfo.homepage || 'No homepage specified'}
+- Homepage: ${context.repoInfo.homepage || "No homepage specified"}
 
 `;
     }
@@ -436,8 +517,10 @@ ${JSON.stringify(context.fileTree, null, 2).substring(0, 2000)}...
     if (conversationHistory && conversationHistory.length > 0) {
       contextPrompt += `Previous conversation:
 `;
-      conversationHistory.slice(-5).forEach(msg => {
-        contextPrompt += `${msg.type === 'user' ? 'User' : 'Assistant'}: ${msg.content}\n`;
+      conversationHistory.slice(-5).forEach((msg) => {
+        contextPrompt += `${msg.type === "user" ? "User" : "Assistant"}: ${
+          msg.content
+        }\n`;
       });
       contextPrompt += `\n`;
     }
@@ -457,11 +540,16 @@ ${JSON.stringify(context.fileTree, null, 2).substring(0, 2000)}...
 12. If you don't have enough information, say so politely and suggest what might help
 13. Keep answers concise but warm and personal
 14. If the repository has a homepage URL, mention it and suggest visiting the live website
-15. For repositories without README files, use the homepage URL and file structure to explain the project's purpose
-16. Help ${username} understand what the website does based on the repository structure and homepage
-17. Always end responses with encouragement or a helpful follow-up question to keep the conversation flowing
-18. Use phrases like "I'm excited to help you with this!" or "Let's explore this together!" to maintain a companion-like tone
-${hasPreviousSessions ? `19. IMPORTANT: ${username} has analyzed this repository before and had previous conversations. You have access to the full conversation history for context, but only show responses for the current session. If ${username} asks about previous conversations or what they asked before, acknowledge that you remember and can reference previous discussions, but keep the current session clean and focused.` : ''}
+15.If someone want to clone the repository, provide the clone command
+16. For repositories without README files, use the homepage URL and file structure to explain the project's purpose
+17. Help ${username} understand what the website does based on the repository structure and homepage
+18. Always end responses with encouragement or a helpful follow-up question to keep the conversation flowing
+19. Use phrases like "I'm excited to help you with this!" or "Let's explore this together!" to maintain a companion-like tone
+${
+  hasPreviousSessions
+    ? `20. IMPORTANT: ${username} has analyzed this repository before and had previous conversations. You have access to the full conversation history for context, but only show responses for the current session. If ${username} asks about previous conversations or what they asked before, acknowledge that you remember and can reference previous discussions, but keep the current session clean and focused.`
+    : ""
+}
 
 ${username}'s question: ${message}
 
@@ -473,9 +561,8 @@ Response (use markdown formatting for better readability and maintain a warm, co
 
     res.json({
       response: aiResponse,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error("AI Chat error:", error);
     res.status(500).json({
