@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { X, Brain, Copy, Check, FileText, Maximize2, Download } from "lucide-react";
+import {
+  X,
+  Brain,
+  Copy,
+  Check,
+  FileText,
+  Maximize2,
+  Download,
+} from "lucide-react";
 import { useToast } from "../contexts/ToastContext";
 import { useFullscreen } from "../contexts/FullscreenContext";
 import axios from "axios";
@@ -47,13 +55,23 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
   setAnalysisError: externalSetAnalysisError,
 }) => {
   const { toggleFullscreen } = useFullscreen();
-  
+
   // Use external state if provided, otherwise use internal state
-  const analysis = externalAnalysisData !== undefined ? externalAnalysisData : useState<AnalysisData | null>(null)[0];
-  const setAnalysis = externalSetAnalysisData || useState<AnalysisData | null>(null)[1];
-  const loading = externalAnalysisLoading !== undefined ? externalAnalysisLoading : useState(false)[0];
+  const analysis =
+    externalAnalysisData !== undefined
+      ? externalAnalysisData
+      : useState<AnalysisData | null>(null)[0];
+  const setAnalysis =
+    externalSetAnalysisData || useState<AnalysisData | null>(null)[1];
+  const loading =
+    externalAnalysisLoading !== undefined
+      ? externalAnalysisLoading
+      : useState(false)[0];
   const setLoading = externalSetAnalysisLoading || useState(false)[1];
-  const error = externalAnalysisError !== undefined ? externalAnalysisError : useState("")[0];
+  const error =
+    externalAnalysisError !== undefined
+      ? externalAnalysisError
+      : useState("")[0];
   const setError = externalSetAnalysisError || useState("")[1];
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<"editor" | "analysis">("editor");
@@ -64,85 +82,85 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
 
   // Function to detect programming language from file extension
   const detectLanguage = (filename: string): string => {
-    const extension = filename.split('.').pop()?.toLowerCase() || '';
-    
+    const extension = filename.split(".").pop()?.toLowerCase() || "";
+
     const languageMap: { [key: string]: string } = {
       // Web Technologies
-      'js': 'JavaScript',
-      'jsx': 'JavaScript (React)',
-      'ts': 'TypeScript',
-      'tsx': 'TypeScript (React)',
-      'html': 'HTML',
-      'htm': 'HTML',
-      'css': 'CSS',
-      'scss': 'SCSS',
-      'sass': 'Sass',
-      'less': 'Less',
-      'vue': 'Vue.js',
-      'svelte': 'Svelte',
-      
+      js: "JavaScript",
+      jsx: "JavaScript (React)",
+      ts: "TypeScript",
+      tsx: "TypeScript (React)",
+      html: "HTML",
+      htm: "HTML",
+      css: "CSS",
+      scss: "SCSS",
+      sass: "Sass",
+      less: "Less",
+      vue: "Vue.js",
+      svelte: "Svelte",
+
       // Backend Languages
-      'py': 'Python',
-      'java': 'Java',
-      'kt': 'Kotlin',
-      'scala': 'Scala',
-      'go': 'Go',
-      'rs': 'Rust',
-      'php': 'PHP',
-      'rb': 'Ruby',
-      'pl': 'Perl',
-      'r': 'R',
-      'swift': 'Swift',
-      'dart': 'Dart',
-      
+      py: "Python",
+      java: "Java",
+      kt: "Kotlin",
+      scala: "Scala",
+      go: "Go",
+      rs: "Rust",
+      php: "PHP",
+      rb: "Ruby",
+      pl: "Perl",
+      r: "R",
+      swift: "Swift",
+      dart: "Dart",
+
       // C Family
-      'c': 'C',
-      'cpp': 'C++',
-      'cc': 'C++',
-      'cxx': 'C++',
-      'c++': 'C++',
-      'cs': 'C#',
-      'h': 'C/C++ Header',
-      'hpp': 'C++ Header',
-      
+      c: "C",
+      cpp: "C++",
+      cc: "C++",
+      cxx: "C++",
+      "c++": "C++",
+      cs: "C#",
+      h: "C/C++ Header",
+      hpp: "C++ Header",
+
       // System & Scripting
-      'sh': 'Shell Script',
-      'bash': 'Bash',
-      'zsh': 'Zsh',
-      'fish': 'Fish',
-      'ps1': 'PowerShell',
-      'bat': 'Batch',
-      'cmd': 'Batch',
-      
+      sh: "Shell Script",
+      bash: "Bash",
+      zsh: "Zsh",
+      fish: "Fish",
+      ps1: "PowerShell",
+      bat: "Batch",
+      cmd: "Batch",
+
       // Configuration & Data
-      'json': 'JSON',
-      'xml': 'XML',
-      'yaml': 'YAML',
-      'yml': 'YAML',
-      'toml': 'TOML',
-      'ini': 'INI',
-      'cfg': 'Configuration',
-      'conf': 'Configuration',
-      'sql': 'SQL',
-      'graphql': 'GraphQL',
-      
+      json: "JSON",
+      xml: "XML",
+      yaml: "YAML",
+      yml: "YAML",
+      toml: "TOML",
+      ini: "INI",
+      cfg: "Configuration",
+      conf: "Configuration",
+      sql: "SQL",
+      graphql: "GraphQL",
+
       // Markup & Documentation
-      'md': 'Markdown',
-      'markdown': 'Markdown',
-      'rst': 'reStructuredText',
-      'tex': 'LaTeX',
-      
+      md: "Markdown",
+      markdown: "Markdown",
+      rst: "reStructuredText",
+      tex: "LaTeX",
+
       // Other
-      'dockerfile': 'Dockerfile',
-      'makefile': 'Makefile',
-      'cmake': 'CMake',
-      'gradle': 'Gradle',
-      'maven': 'Maven',
-      'pom': 'Maven POM',
-      'lock': 'Lock File',
-      'log': 'Log File',
+      dockerfile: "Dockerfile",
+      makefile: "Makefile",
+      cmake: "CMake",
+      gradle: "Gradle",
+      maven: "Maven",
+      pom: "Maven POM",
+      lock: "Lock File",
+      log: "Log File",
     };
-    
+
     return languageMap[extension] || extension.toUpperCase();
   };
 
@@ -154,14 +172,14 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
       setError("");
       setLoading(false);
     }
-    
+
     setActiveTab("editor"); // Reset to editor tab for new file
     hasShownImageError.current = false; // Reset image error flag for new file
     setFileChanged(true); // Show file changed indicator
-    
+
     // Clear the file changed indicator after a short delay
     const timer = setTimeout(() => setFileChanged(false), 2000);
-    
+
     // Check if file is an image
     const imageExtensions = [".jpg", ".jpeg", ".png", ".svg"];
     const fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
@@ -176,7 +194,7 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
       hasShownImageError.current = true;
       setActiveTab("analysis"); // Switch to analysis tab which will show the message
     }
-    
+
     return () => clearTimeout(timer); // Cleanup timer
   }, [file.name, file.path]); // Reset when file name or path changes
 
@@ -205,9 +223,9 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
       // Add detected language to the analysis data
       const analysisWithLanguage = {
         ...response.data.analysis,
-        language: detectLanguage(file.name)
+        language: detectLanguage(file.name),
       };
-      
+
       setAnalysis(analysisWithLanguage);
       setActiveTab("analysis");
       success("Analysis Complete!", "AI has analyzed your code successfully");
@@ -231,7 +249,6 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
       showError("Copy Failed", "Could not copy code to clipboard");
     }
   };
-
 
   const getLanguage = (filename: string) => {
     const ext = filename.split(".").pop()?.toLowerCase();
@@ -280,13 +297,16 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
     return (
       <div className="space-y-0">
         {lines.map((line, index) => (
-          <div key={index} className="group/line flex hover:bg-gray-800/20 transition-all duration-200 rounded px-2 py-0.5">
+          <div
+            key={index}
+            className="group/line flex hover:bg-gray-800/20 transition-all duration-200 rounded px-2 py-0.5"
+          >
             <div className="w-16 text-right pr-4 text-gray-500/70 text-xs select-none font-mono leading-6 group-hover/line:text-gray-400 transition-colors duration-200">
-              {String(index + 1).padStart(3, ' ')}
-        </div>
+              {String(index + 1).padStart(3, " ")}
+            </div>
             <div className="flex-1 text-gray-200 text-sm font-mono leading-6 group-hover/line:text-gray-100 transition-colors duration-200">
-          {line || "\u00A0"}
-        </div>
+              {line || "\u00A0"}
+            </div>
           </div>
         ))}
       </div>
@@ -304,7 +324,9 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             </div>
             Summary
           </h3>
-          <p className="text-gray-300 leading-relaxed text-base group-hover:text-gray-200 transition-colors duration-300">{analysis.summary}</p>
+          <p className="text-gray-300 leading-relaxed text-base group-hover:text-gray-200 transition-colors duration-300">
+            {analysis.summary}
+          </p>
         </div>
 
         {/* Key Functions Section */}
@@ -318,11 +340,16 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             </h3>
             <div className="space-y-4">
               {analysis.keyFunctions.map((func, index) => (
-                <div key={index} className="group/item bg-gradient-to-r from-gray-700/40 to-gray-800/40 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30 hover:border-blue-500/50 hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
+                <div
+                  key={index}
+                  className="group/item bg-gradient-to-r from-gray-700/40 to-gray-800/40 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30 hover:border-blue-500/50 hover:shadow-md transition-all duration-300 hover:scale-[1.02]"
+                >
                   <div className="font-mono text-blue-300 font-bold mb-2 text-lg group-hover/item:text-blue-200 transition-colors duration-300">
                     {func.name}
                   </div>
-                  <div className="text-gray-300 text-sm leading-relaxed group-hover/item:text-gray-200 transition-colors duration-300">{func.description}</div>
+                  <div className="text-gray-300 text-sm leading-relaxed group-hover/item:text-gray-200 transition-colors duration-300">
+                    {func.description}
+                  </div>
                 </div>
               ))}
             </div>
@@ -333,24 +360,36 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
         {analysis.cleanCode !== null && (
           <div className="group bg-gradient-to-br from-gray-800/60 to-gray-900/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:shadow-xl hover:border-purple-500/30 transition-all duration-300">
             <h3 className="text-xl font-bold text-white mb-4 flex items-center group-hover:text-purple-300 transition-colors duration-300">
-              <div className={`p-2 rounded-lg mr-3 transition-colors duration-300 ${
-                analysis.cleanCode ? 'bg-green-500/20 group-hover:bg-green-500/30' : 'bg-red-500/20 group-hover:bg-red-500/30'
-              }`}>
-                <div className={`w-5 h-5 rounded-full ${
-                  analysis.cleanCode ? 'bg-green-400' : 'bg-red-400'
-                }`}></div>
+              <div
+                className={`p-2 rounded-lg mr-3 transition-colors duration-300 ${
+                  analysis.cleanCode
+                    ? "bg-green-500/20 group-hover:bg-green-500/30"
+                    : "bg-red-500/20 group-hover:bg-red-500/30"
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 rounded-full ${
+                    analysis.cleanCode ? "bg-green-400" : "bg-red-400"
+                  }`}
+                ></div>
               </div>
               Code Quality
             </h3>
-            <div className={`inline-flex items-center px-6 py-3 rounded-full text-base font-bold shadow-lg transition-all duration-300 hover:scale-105 ${
-              analysis.cleanCode 
-                ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border-2 border-green-500/40 hover:border-green-400/60 hover:shadow-green-500/20' 
-                : 'bg-gradient-to-r from-red-500/20 to-rose-500/20 text-red-300 border-2 border-red-500/40 hover:border-red-400/60 hover:shadow-red-500/20'
-            }`}>
-              <div className={`w-3 h-3 rounded-full mr-2 ${
-                analysis.cleanCode ? 'bg-green-400' : 'bg-red-400'
-              }`}></div>
-              {analysis.cleanCode ? '✨ Clean & Maintainable' : '⚠️ Needs Improvement'}
+            <div
+              className={`inline-flex items-center px-6 py-3 rounded-full text-base font-bold shadow-lg transition-all duration-300 hover:scale-105 ${
+                analysis.cleanCode
+                  ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border-2 border-green-500/40 hover:border-green-400/60 hover:shadow-green-500/20"
+                  : "bg-gradient-to-r from-red-500/20 to-rose-500/20 text-red-300 border-2 border-red-500/40 hover:border-red-400/60 hover:shadow-red-500/20"
+              }`}
+            >
+              <div
+                className={`w-3 h-3 rounded-full mr-2 ${
+                  analysis.cleanCode ? "bg-green-400" : "bg-red-400"
+                }`}
+              ></div>
+              {analysis.cleanCode
+                ? "✨ Clean & Maintainable"
+                : "⚠️ Needs Improvement"}
             </div>
           </div>
         )}
@@ -366,9 +405,14 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             </h3>
             <ul className="space-y-3">
               {analysis.issues.map((issue, index) => (
-                <li key={index} className="group/item flex items-start bg-gradient-to-r from-red-500/10 to-rose-500/10 backdrop-blur-sm rounded-lg p-3 border border-red-500/20 hover:border-red-400/40 hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
+                <li
+                  key={index}
+                  className="group/item flex items-start bg-gradient-to-r from-red-500/10 to-rose-500/10 backdrop-blur-sm rounded-lg p-3 border border-red-500/20 hover:border-red-400/40 hover:shadow-md transition-all duration-300 hover:scale-[1.01]"
+                >
                   <div className="w-3 h-3 bg-red-400 rounded-full mt-1 mr-3 flex-shrink-0 group-hover/item:bg-red-300 transition-colors duration-300"></div>
-                  <span className="text-gray-300 text-sm leading-relaxed group-hover/item:text-gray-200 transition-colors duration-300">{issue}</span>
+                  <span className="text-gray-300 text-sm leading-relaxed group-hover/item:text-gray-200 transition-colors duration-300">
+                    {issue}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -386,9 +430,14 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             </h3>
             <ul className="space-y-3">
               {analysis.improvements.map((improvement, index) => (
-                <li key={index} className="group/item flex items-start bg-gradient-to-r from-yellow-500/10 to-amber-500/10 backdrop-blur-sm rounded-lg p-3 border border-yellow-500/20 hover:border-yellow-400/40 hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
+                <li
+                  key={index}
+                  className="group/item flex items-start bg-gradient-to-r from-yellow-500/10 to-amber-500/10 backdrop-blur-sm rounded-lg p-3 border border-yellow-500/20 hover:border-yellow-400/40 hover:shadow-md transition-all duration-300 hover:scale-[1.01]"
+                >
                   <div className="w-3 h-3 bg-yellow-400 rounded-full mt-1 mr-3 flex-shrink-0 group-hover/item:bg-yellow-300 transition-colors duration-300"></div>
-                  <span className="text-gray-300 text-sm leading-relaxed group-hover/item:text-gray-200 transition-colors duration-300">{improvement}</span>
+                  <span className="text-gray-300 text-sm leading-relaxed group-hover/item:text-gray-200 transition-colors duration-300">
+                    {improvement}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -407,18 +456,16 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             <div className="flex flex-wrap gap-3">
               {/* Programming Language */}
               {analysis.language && (
-                <span 
-                  className="group/tag px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 rounded-full text-sm font-medium border border-blue-500/30 hover:border-blue-400/50 hover:bg-gradient-to-r hover:from-blue-500/30 hover:to-cyan-500/30 hover:text-blue-200 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20"
-                >
+                <span className="group/tag px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 rounded-full text-sm font-medium border border-blue-500/30 hover:border-blue-400/50 hover:bg-gradient-to-r hover:from-blue-500/30 hover:to-cyan-500/30 hover:text-blue-200 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
                   <span className="group-hover/tag:animate-pulse">💻</span>
                   <span className="ml-1">{analysis.language}</span>
                 </span>
               )}
-              
+
               {/* Libraries & Frameworks */}
               {analysis.libraries.map((lib, index) => (
-                <span 
-                  key={index} 
+                <span
+                  key={index}
                   className="group/tag px-4 py-2 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-300 rounded-full text-sm font-medium border border-purple-500/30 hover:border-purple-400/50 hover:bg-gradient-to-r hover:from-purple-500/30 hover:to-indigo-500/30 hover:text-purple-200 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
                 >
                   <span className="group-hover/tag:animate-pulse">📦</span>
@@ -436,37 +483,43 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
     <div className="w-full h-full bg-slate-900/95 border-t xl:border-t-0 xl:border-l border-green-500/20 flex flex-col min-h-0">
       {/* VS Code-like Header */}
       <div className="bg-slate-800/50 border-b border-green-500/20 flex-shrink-0">
-         {/* Enhanced Tab Bar */}
-         <div className="flex items-center bg-gradient-to-r from-slate-800/50 to-slate-700/50 border-b border-green-500/20 backdrop-blur-sm">
-           <div className="flex items-center space-x-1 px-3 py-2">
+        {/* Enhanced Tab Bar */}
+        <div className="flex items-center bg-gradient-to-r from-slate-800/50 to-slate-700/50 border-b border-green-500/20 backdrop-blur-sm">
+          <div className="flex items-center space-x-1 px-3 py-2">
             <button
               onClick={() => !isImageFile && setActiveTab("editor")}
-               className={`group relative px-4 py-3 text-sm font-medium rounded-t-lg transition-all duration-300 flex items-center space-x-2 ${
+              className={`group relative px-4 py-3 text-sm font-medium rounded-t-lg transition-all duration-300 flex items-center space-x-2 ${
                 activeTab === "editor"
-                   ? "bg-gradient-to-b from-slate-900/95 to-slate-800/95 text-white border-b-2 border-green-400 shadow-lg"
-                   : "github-text-secondary hover:text-white hover:bg-gradient-to-b hover:from-slate-700/50 hover:to-slate-600/50 hover:shadow-md"
+                  ? "bg-gradient-to-b from-slate-900/95 to-slate-800/95 text-white border-b-2 border-green-400 shadow-lg"
+                  : "github-text-secondary hover:text-white hover:bg-gradient-to-b hover:from-slate-700/50 hover:to-slate-600/50 hover:shadow-md"
               } ${isImageFile ? "cursor-not-allowed opacity-50" : ""}`}
               disabled={isImageFile}
             >
-               <span className="text-lg group-hover:scale-110 transition-transform duration-200">{getLanguageIcon(file.name)}</span>
-               <span className="group-hover:font-semibold transition-all duration-200">{file.name}</span>
-               {activeTab === "editor" && (
-                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-t-lg"></div>
-               )}
+              <span className="text-lg group-hover:scale-110 transition-transform duration-200">
+                {getLanguageIcon(file.name)}
+              </span>
+              <span className="group-hover:font-semibold transition-all duration-200">
+                {file.name}
+              </span>
+              {activeTab === "editor" && (
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-t-lg"></div>
+              )}
             </button>
             <button
               onClick={() => setActiveTab("analysis")}
-               className={`group relative px-4 py-3 text-sm font-medium rounded-t-lg transition-all duration-300 flex items-center space-x-2 ${
+              className={`group relative px-4 py-3 text-sm font-medium rounded-t-lg transition-all duration-300 flex items-center space-x-2 ${
                 activeTab === "analysis"
-                   ? "bg-gradient-to-b from-slate-900/95 to-slate-800/95 text-white border-b-2 border-green-400 shadow-lg"
-                   : "github-text-secondary hover:text-white hover:bg-gradient-to-b hover:from-slate-700/50 hover:to-slate-600/50 hover:shadow-md"
-               }`}
-             >
-               <Brain className="w-4 h-4 group-hover:animate-pulse transition-all duration-200" />
-               <span className="group-hover:font-semibold transition-all duration-200">AI Analysis</span>
-               {activeTab === "analysis" && (
-                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-t-lg"></div>
-               )}
+                  ? "bg-gradient-to-b from-slate-900/95 to-slate-800/95 text-white border-b-2 border-green-400 shadow-lg"
+                  : "github-text-secondary hover:text-white hover:bg-gradient-to-b hover:from-slate-700/50 hover:to-slate-600/50 hover:shadow-md"
+              }`}
+            >
+              <Brain className="w-4 h-4 group-hover:animate-pulse transition-all duration-200" />
+              <span className="group-hover:font-semibold transition-all duration-200">
+                AI Analysis
+              </span>
+              {activeTab === "analysis" && (
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-t-lg"></div>
+              )}
             </button>
           </div>
         </div>
@@ -477,16 +530,18 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2 px-3 py-1 bg-slate-700/50 rounded-full border border-green-500/20">
                 <span className="text-xs github-text-primary font-medium">
-                {getLanguage(file.name)}
-              </span>
-              <span className="text-xs github-text-secondary">•</span>
-                <span className="text-xs github-text-secondary font-mono">{file.path}</span>
+                  {getLanguage(file.name)}
+                </span>
+                <span className="text-xs github-text-secondary">•</span>
+                <span className="text-xs github-text-secondary font-mono">
+                  {file.path}
+                </span>
               </div>
             </div>
           </div>
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => toggleFullscreen('analysis')}
+              onClick={() => toggleFullscreen("analysis")}
               className="group p-2 rounded-lg github-text-secondary hover:text-white hover:bg-green-500/20 hover:border-green-500/30 border border-transparent transition-all duration-300 hover:scale-105"
               title="Toggle fullscreen"
             >
@@ -506,7 +561,37 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
             </button>
             {file.download_url && (
               <button
-                onClick={() => window.open(file.download_url, '_blank')}
+                // onClick={() => window.open(file.download_url, '_blank')}
+                onClick={async () => {
+                  try {
+                    const response = await axios.get(
+                      `${API_BASE_URL}/github/file-content`,
+                      {
+                        params: { url: file.download_url },
+                        responseType: "text", // important for download
+                      }
+                    );
+                    // Convert JSON string → object
+                    const json = JSON.parse(response.data);
+
+                    // Extract code inside "content"
+                    const code = json.content;
+                    const blob = new Blob([code], {
+                      type: "text/plain;charset=utf-8",
+                    });
+                    const url = window.URL.createObjectURL(blob);
+
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = file.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                  } catch (error) {
+                    console.error("Download failed:", error);
+                  }
+                }}
                 className="group p-2 rounded-lg github-text-secondary hover:text-green-400 hover:bg-green-500/20 hover:border-green-500/30 border border-transparent transition-all duration-300 hover:scale-105"
                 title="Download file"
               >
@@ -527,79 +612,82 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
       {/* Content Area */}
       <div className="flex-1 flex flex-col min-h-0">
         {activeTab === "editor" ? (
-            /* Enhanced Code Editor */
-            <div className="flex-1 overflow-auto bg-gradient-to-br from-slate-900/95 to-slate-800/95">
-              <div className="p-6">
-                <div className="bg-gradient-to-br from-slate-900/95 to-slate-800/95 rounded-xl border border-green-500/20 overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500">
-                  <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-6 py-4 border-b border-green-500/20 flex items-center justify-between backdrop-blur-sm">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-green-500/20 rounded-lg">
-                        <FileText className="w-5 h-5 text-green-400" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-base github-text-primary font-semibold">
-                      {file.name}
-                    </span>
-                        <span className="text-xs github-text-secondary">
-                          {getLanguage(file.name)} • {file.path}
-                        </span>
-                      </div>
+          /* Enhanced Code Editor */
+          <div className="flex-1 overflow-auto bg-gradient-to-br from-slate-900/95 to-slate-800/95">
+            <div className="p-6">
+              <div className="bg-gradient-to-br from-slate-900/95 to-slate-800/95 rounded-xl border border-green-500/20 overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500">
+                <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-6 py-4 border-b border-green-500/20 flex items-center justify-between backdrop-blur-sm">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-green-500/20 rounded-lg">
+                      <FileText className="w-5 h-5 text-green-400" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-base github-text-primary font-semibold">
+                        {file.name}
+                      </span>
+                      <span className="text-xs github-text-secondary">
+                        {getLanguage(file.name)} • {file.path}
+                      </span>
+                    </div>
                   </div>
-                    <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-3">
                     <button
                       onClick={analyzeCode}
                       disabled={loading || isImageFile}
-                        className="github-btn-primary group relative flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-bold rounded-xl hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/30 active:scale-95 overflow-hidden github-animate-glow"
+                      className="github-btn-primary group relative flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-bold rounded-xl hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/30 active:scale-95 overflow-hidden github-animate-glow"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
                       {loading ? (
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <Brain className="w-5 h-5 group-hover:animate-pulse" />
-                        )}
-                        <span className="group-hover:font-extrabold transition-all duration-300 relative z-10">
-                          {loading ? "Analyzing..." : "Analyze with AI"}
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <Brain className="w-5 h-5 group-hover:animate-pulse" />
+                      )}
+                      <span className="group-hover:font-extrabold transition-all duration-300 relative z-10">
+                        {loading ? "Analyzing..." : "Analyze with AI"}
+                      </span>
+                      {!loading && (
+                        <span className="text-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
+                          ✨
                         </span>
-                        {!loading && (
-                          <span className="text-sm opacity-80 group-hover:opacity-100 transition-opacity duration-300 relative z-10">✨</span>
-                        )}
+                      )}
                     </button>
                   </div>
                 </div>
-                  <div className="relative">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-green-500/20"></div>
-                    <div className="p-6 font-mono text-sm leading-relaxed bg-gradient-to-br from-slate-900/95 to-slate-800/95">
-                  {isImageFile ? (
-                        <div className="text-center py-16">
-                          <div className="relative">
-                            <div className="p-6 bg-gradient-to-br from-slate-500/20 to-slate-600/20 backdrop-blur-sm rounded-full mx-auto mb-6 w-fit border border-green-500/20">
-                              <FileText className="w-12 h-12 text-green-400" />
-                            </div>
-                            <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs">🚫</span>
-                            </div>
-                      </div>
-                          <div className="space-y-3">
-                            <p className="github-text-primary text-lg font-medium">
-                              Unsupported File Type
-                            </p>
-                            <p className="github-text-secondary text-sm max-w-md mx-auto">
-                              Image files cannot be displayed in the code editor
-                      </p>
-                      <p className="text-gray-600 text-xs">
-                              This file appears to be an image (.jpg, .jpeg, .png, .svg)
-                      </p>
-                          </div>
-                    </div>
-                  ) : (
+                <div className="relative">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-green-500/20"></div>
+                  <div className="p-6 font-mono text-sm leading-relaxed bg-gradient-to-br from-slate-900/95 to-slate-800/95">
+                    {isImageFile ? (
+                      <div className="text-center py-16">
                         <div className="relative">
-                          <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-green-500/30 via-emerald-500/30 to-green-500/30 rounded-full"></div>
-                          <div className="ml-4">
-                            {renderLineNumbers(formattedContent)}
+                          <div className="p-6 bg-gradient-to-br from-slate-500/20 to-slate-600/20 backdrop-blur-sm rounded-full mx-auto mb-6 w-fit border border-green-500/20">
+                            <FileText className="w-12 h-12 text-green-400" />
+                          </div>
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs">🚫</span>
                           </div>
                         </div>
-                      )}
-                    </div>
+                        <div className="space-y-3">
+                          <p className="github-text-primary text-lg font-medium">
+                            Unsupported File Type
+                          </p>
+                          <p className="github-text-secondary text-sm max-w-md mx-auto">
+                            Image files cannot be displayed in the code editor
+                          </p>
+                          <p className="text-gray-600 text-xs">
+                            This file appears to be an image (.jpg, .jpeg, .png,
+                            .svg)
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-green-500/30 via-emerald-500/30 to-green-500/30 rounded-full"></div>
+                        <div className="ml-4">
+                          {renderLineNumbers(formattedContent)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -618,7 +706,9 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
                     {fileChanged && (
                       <div className="flex items-center space-x-1">
                         <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                        <span className="text-xs text-green-400">New file loaded</span>
+                        <span className="text-xs text-green-400">
+                          New file loaded
+                        </span>
                       </div>
                     )}
                   </div>
@@ -675,13 +765,20 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
                           Ready for AI Analysis
                         </p>
                         <p className="text-gray-500 text-sm max-w-md mx-auto">
-                          Switch to the editor tab and click "Analyze" to get detailed insights about your code
+                          Switch to the editor tab and click "Analyze" to get
+                          detailed insights about your code
                         </p>
                       </div>
                       <div className="mt-6 flex justify-center space-x-2">
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"
+                          style={{ animationDelay: "0.2s" }}
+                        ></div>
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"
+                          style={{ animationDelay: "0.4s" }}
+                        ></div>
                       </div>
                     </div>
                   ) : null}
@@ -706,8 +803,14 @@ const CodeAnalysisPanel: React.FC<CodeAnalysisPanelProps> = ({
                       </div>
                       <div className="mt-6 flex justify-center space-x-1">
                         <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                        <div
+                          className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+                          style={{ animationDelay: "0.1s" }}
+                        ></div>
+                        <div
+                          className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+                          style={{ animationDelay: "0.2s" }}
+                        ></div>
                       </div>
                     </div>
                   )}
